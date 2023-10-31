@@ -13,13 +13,14 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using IngameDebugConsole;
+using UI;
 
 namespace Actor
 {
     /// <summary>
     /// 
     /// </summary>
-	public class UIAuxiliary : MonoBehaviour 
+	public class UIAuxiliary : UIWindow 
 	{
         public KeyCode keyCode1 = KeyCode.LeftAlt;
         public KeyCode keyCode2 = KeyCode.T;
@@ -47,11 +48,19 @@ namespace Actor
         protected int framesCount;
         protected float framesTime;
 
-        private void Start ()
+        public UIAuxiliary()
         {
+            dragRoot.data = "drag";
+        }
+
+        protected override void OnLoaded()
+        {
+            base.OnLoaded();
             timescale.onValueChanged.AddListener(ChangeTimeScale);
             quility.onValueChanged.AddListener(ChangeQuility);
             debug.onValueChanged.AddListener(Console);
+            popup.Hide();
+            bg.gameObject.SetActive(false);
         }
 
         private void Update()

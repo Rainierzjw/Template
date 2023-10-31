@@ -27,7 +27,7 @@ namespace UI
             //            pos.x = pos.x.Limit(0, Screen.width - parent.tnf.sizeDelta.x);
             //            pos.y = pos.y.Limit(-Screen.height + parent.tnf.sizeDelta.y,0);
             //            parent.tnf.anchoredPosition = pos;
-            (parent.transform as RectTransform).anchoredPosition += arg2;
+            (transform as RectTransform).anchoredPosition += arg2;
         }
     }
 }

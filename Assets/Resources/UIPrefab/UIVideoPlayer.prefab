@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 360044454225443114}
   - component: {fileID: 360044454225443115}
   m_Layer: 5
-  m_Name: UI_VideoPlayer
+  m_Name: UIVideoPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,9 +46,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 360044454225443113}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcdea8d31b7639a4eb059d0254a808ce, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c3d0b2a34efecc4c8afde4810f24a05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  layer: 0
   control: {fileID: 326995227846720537}
   videoSeekSld: {fileID: 7695387736018028443}
   playBtn: {fileID: 65583683137048523}
@@ -205,8 +206,8 @@ MonoBehaviour:
   m_events:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: RenderHeads.Media.AVProVideo.MediaPlayerEvent, Assembly-CSharp, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+    m_TypeName: RenderHeads.Media.AVProVideo.MediaPlayerEvent, Assembly-CSharp-firstpass,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   m_eventMask: -1
   m_forceFileFormat: 0
   _pauseMediaOnAppPause: 1

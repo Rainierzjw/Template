@@ -62,6 +62,7 @@ namespace Misc
         SceneSystem,
         UISystem,
         CameraPathSystem,
+        TestSystem,
     }
 
     public enum SceneName

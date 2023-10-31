@@ -21,7 +21,7 @@ namespace UI
     /// <summary>
     /// 
     /// </summary>
-	public class UIVideoPlayer : MonoBehaviour
+	public class UIVideoPlayer : BaseUI
 	{
         public Transform control;
         public Slider videoSeekSld;
@@ -36,8 +36,9 @@ namespace UI
         private string path;
         public bool isControl = false;
 
-        private void Awake()
+        protected override void OnLoaded()
         {
+            base.OnLoaded();
             if (bufferedSliderRect != null)
             {
                 bufferedSliderImage = bufferedSliderRect.GetComponent<Image>();
@@ -47,8 +48,9 @@ namespace UI
             videoSeekSld.onValueChanged.AddListener(OnVideoSeekSlider);
         }
 
-        private void OnShow()
+        protected override void OnShow()
         {
+            base.OnShow();
             mediaPlayer.m_VideoPath = System.IO.Path.Combine(folder, path);
             if (string.IsNullOrEmpty(mediaPlayer.m_VideoPath))
             {
@@ -61,8 +63,9 @@ namespace UI
             ControlHide();
         }
 
-        private void OnHide()
+        protected override void OnHide()
         {
+            base.OnHide();
             mediaPlayer.CloseVideo();
         }
 

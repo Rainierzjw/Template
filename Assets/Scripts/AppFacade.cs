@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using SystemManager;
 using Misc;
 using UI;
+using Actor;
 
 namespace App
 {
@@ -118,14 +119,16 @@ namespace App
 
         private void LoadUI()
         {
-            uiSystem.LoadUI<UIHome>().Show();
-            uiSystem.LoadUI<UILoding>();
+            uiSystem.LoadUI<UIAuxiliary>().Show();
+            //uiSystem.LoadUI<UIHome>();
+            //uiSystem.LoadUI<UILoding>();
         }
 
         private void UnloadUI()
         {
-            uiSystem.UnloadUI<UIHome>();
-            uiSystem.UnloadUI<UILoding>();
+            uiSystem.UnloadUI<UIAuxiliary>();
+            //uiSystem.UnloadUI<UIHome>();
+            //uiSystem.UnloadUI<UILoding>();
         }
 
         /// <summary>
