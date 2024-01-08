@@ -23,7 +23,7 @@ namespace UI
     /// <summary>
     /// UI基类
     /// </summary>
-	public class UIBase : CommonLogic
+	public class UIBase : MonoBehaviour
     {
         public enum UILayer
         {

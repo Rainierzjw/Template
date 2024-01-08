@@ -15,8 +15,6 @@ using System.Collections;
 using System.Collections.Generic;
 using SystemManager;
 using App;
-using Com.Rainier.Buskit.Unity.Architecture.Logging;
-using Com.Rainier.Buskit3D;
 using Misc;
 
 namespace UI
@@ -33,17 +31,11 @@ namespace UI
 	    private AsyncOperation async;
 	    
 	    /// <summary>
-	    /// MVVM上下文环境
-	    /// </summary>
-	    MvvmContext context;
-
-	    /// <summary>
 	    /// 获取MVVM上下文环境
 	    /// </summary>
 	    protected override void OnLoaded()
 	    {
 		    base.OnLoaded();
-		    context = GetComponent<MvvmContext>();
 		    for (int i = 0; i < transform.childCount-1; i++)
 		    {
 			    images.Add(transform.GetChild(i).gameObject);
