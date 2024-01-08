@@ -550,10 +550,10 @@ namespace IngameDebugConsole
 
 		private void Start()
 		{
-			//if ((enablePopup && startInPopupMode) || (!enablePopup && startMinimized))
-			//	HideLogWindow();
-			//else
-			//	ShowLogWindow();
+			if( ( enablePopup && startInPopupMode ) || ( !enablePopup && startMinimized ) )
+				HideLogWindow();
+			else
+				ShowLogWindow();
 
 			PopupEnabled = enablePopup;
 		}
