@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using App;
+using Misc;
 
 /// <summary>
 /// 摄像机查看旋转物体脚本

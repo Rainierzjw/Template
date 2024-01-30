@@ -12,7 +12,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace App
+namespace Misc
 {
     /// <summary>
     /// 
