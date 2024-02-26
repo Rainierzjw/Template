@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Plugins/AVProVideo/Runtime/Plugins/WSA/UWP/x86/Audio360.dll.meta
+guid: 947235627694b5843b3b3461bda59fd9
+========
 guid: a811bde74b26b53498b4f6d872b09b6d
+>>>>>>>> dev_2018.3.7:Assets/Plugins/Demigiant/DOTween/DOTween.dll.meta
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -14,8 +18,21 @@ PluginImporter:
   - first:
       Any: 
     second:
-      enabled: 1
+      enabled: 0
       settings: {}
+  - first:
+      Editor: Editor
+    second:
+      enabled: 0
+      settings:
+        DefaultValueInitialized: true
+  - first:
+      Windows Store Apps: WindowsStoreApps
+    second:
+      enabled: 1
+      settings:
+        CPU: X86
+        SDK: UWP
   userData: 
   assetBundleName: 
   assetBundleVariant: 
