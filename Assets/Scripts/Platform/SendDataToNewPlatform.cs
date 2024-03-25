@@ -48,13 +48,17 @@ namespace Com.HIEU.ZHTCC
         /// </summary>
         private DateTime endTime;
         /// <summary>
-        /// 实验报告内容
-        /// </summary>
-        private JArray joReport = new JArray();
-        /// <summary>
         /// 实验步骤内容
         /// </summary>
-        private JArray StepList = new JArray(); //临时存步骤
+        private JArray joReportStepList = new JArray();
+        /// <summary>
+        /// 实验报告文字
+        /// </summary>
+        private JArray joReportTextList = new JArray();
+        /// <summary>
+        /// 实验报告图片
+        /// </summary>
+        private JArray joReportImageList = new JArray();
         /// <summary>
         /// 序号
         /// </summary>
@@ -137,17 +141,18 @@ namespace Com.HIEU.ZHTCC
         public void SendDataToWeb()
         {
             PatchStep();
-            //CreateReport();
             ChangeTime();
+            RecordsReport();
             JObject jo = new JObject();
             jo["appId"] = appId;
             jo["expId"] = expId;
             jo["version"] = "1.0";
-            //jo["reportData"] = joReport;//实验报告的上传
-            jo["expScoreDetails"] = StepList;
+            jo["reportData"] = joReportTextList;
+            jo["imageDetails"] = joReportImageList;
+            jo["expScoreDetails"] = joReportStepList;
             Debug.Log("jo:" + jo.ToString());
 #if UNITY_WEBGL && !UNITY_EDITOR
-            StartCoroutine(New_SendStepToWeb(jo.ToString()));
+            StartCoroutine(SendData(jo.ToString()));
 #endif
         }
 
@@ -160,34 +165,34 @@ namespace Com.HIEU.ZHTCC
         /// <param name="maxScore">步骤满分</param>
         /// <param name="StartTime">开始时间</param>
         /// <param name="scoringModel">赋分模型</param>
-        public void AddStep(string moduleFlag, string questionStemg, double maxScore, double score, string scoringModel)
+        public void RecordsStep(string moduleFlag, string questionStemg, double maxScore, double score, string scoringModel)
         {
             //已上传的步骤，只更新得分
-            for (int i = 0; i < StepList.Count; i++)
+            for (int i = 0; i < joReportStepList.Count; i++)
             {
-                if (StepList[i]["moduleFlag"].ToString() == moduleFlag && StepList[i]["questionStem"].ToString() == questionStemg)
+                if (joReportStepList[i]["moduleFlag"].ToString() == moduleFlag && joReportStepList[i]["questionStem"].ToString() == questionStemg)
                 {
-                    Debug.Log(questionStemg + "：已上传过得分" + StepList[i]["score"]);
+                    Debug.Log(questionStemg + "：已上传过得分" + joReportStepList[i]["score"]);
 
                     //StepList[i]["endTime"] = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
                     if (score > 0)
                     {
-                        StepList[i]["score"] = score;
+                        joReportStepList[i]["score"] = score;
                         Debug.Log(questionStemg + "：更新得分" + score);
                     }
 
                     if (score < maxScore * 0.3)
                     {
-                        StepList[i]["evaluation"] = "差";
+                        joReportStepList[i]["evaluation"] = "差";
                     }
                     if ((maxScore * 0.3 <= score) && (score < maxScore * 0.7))
                     {
-                        StepList[i]["evaluation"] = "良";
+                        joReportStepList[i]["evaluation"] = "良";
                     }
                     if (maxScore * 0.7 <= score)
                     {
-                        StepList[i]["evaluation"] = "优秀";
+                        joReportStepList[i]["evaluation"] = "优秀";
                     }
                     return;
                 }
@@ -203,11 +208,11 @@ namespace Com.HIEU.ZHTCC
             jo["expectTime"] = 200;
             jo["maxScore"] = maxScore;
             jo["repeatCount"] = 1;
-            if (score < maxScore * 0.3)
+            if (score <= maxScore * 0.3)
             {
                 jo["evaluation"] = "差";
             }
-            if ((maxScore * 0.3 < score) && (score < maxScore * 0.7))
+            if ((maxScore * 0.3 < score) && (score <= maxScore * 0.7))
             {
                 jo["evaluation"] = "良";
             }
@@ -222,24 +227,68 @@ namespace Com.HIEU.ZHTCC
             //Debug.Log("endTime" + jo["endTime"]);
             questionNumber++;
             Debug.Log(jo.ToString());
-            StepList.Add(jo);
+            joReportStepList.Add(jo);
         }
 
         /// <summary>
-        /// 创建实验报告数据
+        /// 记录实验报告文本
         /// </summary>
-        public void CreateReport()
+        public void RecordsReport()
         {
-            JObject jo1 = new JObject();
-            jo1["text1"] = "";
-            joReport.Add(jo1);
+            JObject jo = new JObject();
+            jo["text1"] = "";
+            joReportTextList.Add(jo);
+        }
+
+        /// <summary>
+        /// 记录图片
+        /// </summary>
+        /// <param name="renderTexture">图片</param>
+        /// <param name="imageName">图片对应报告的名字（image1_N）</param>
+        /// <param name="extend">图片格式（jpg，png等等）</param>
+        public void RecordsImage(RenderTexture renderTexture, string imageName, string extend)
+        {
+            ///将RenderTexturex先转成Texture2D再转换成base64编码格式
+            int width = renderTexture.width;
+            int height = renderTexture.height;
+            Texture2D texture2D = new Texture2D(width, height, TextureFormat.ARGB32, false);
+            RenderTexture.active = renderTexture;
+            texture2D.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+            texture2D.Apply();
+            texture2D.Apply();
+            byte[] bytes = texture2D.EncodeToJPG();
+            ///把base64编码保存到streamingAssets文件夹下.txt文件中，去网页测试是否正确
+            //string path = Path.Combine(Application.streamingAssetsPath, imageName + ".txt");
+            //File.WriteAllText(path, Convert.ToBase64String(bytes));
+            string src = "data:image/" + extend + ";base64," + Convert.ToBase64String(bytes);
+
+            //已上传的步骤，只更新得分和结束时间
+            for (int i = 0; i < joReportImageList.Count; i++)
+            {
+                if (joReportImageList[i]["name"].ToString() == imageName)
+                {
+                    //Debug.Log("--------------------已上传过该图片，重新覆盖替换");
+                    joReportImageList[i]["name"] = imageName;
+                    joReportImageList[i]["src"] = src;
+                    joReportImageList[i]["extend"] = extend;
+                    return;
+                }
+            }
+            //Debug.Log(--------------------未上传过该图片);
+            JObject jo = new JObject();
+            jo["name"] = imageName;
+            jo["src"] = src;
+            jo["extend"] = extend;
+            joReportImageList.Add(jo);
+            Debug.Log("--------------------成功写入图片数据");
         }
 
         #endregion
 
         #region 私有函数
 
-        private IEnumerator New_SendStepToWeb(string str)
+        #region 接口API
+        private IEnumerator SendData(string str)
         {
             var req = UnityWebRequest.Post(host + "/openapi/data_upload", str);
             req.SetRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -254,17 +303,19 @@ namespace Com.HIEU.ZHTCC
             Debug.Log(obj.ToString());
         }
 
+        #endregion
+
         /// <summary>
         /// 填充步骤
         /// </summary>
         private void PatchStep()
         {
-            if (StepList.Count < 10)
+            if (joReportStepList.Count < 10)
             {
-                int count = StepList.Count;
+                int count = joReportStepList.Count;
                 for (int i = 0; i < 11 - count; i++)
                 {
-                    AddStep("填充步骤", "填充步骤{i}", 0, 0, "赋分模型");
+                    RecordsStep("填充步骤", "填充步骤{i}", 0, 0, "赋分模型");
                 }
             }
         }
@@ -275,12 +326,12 @@ namespace Com.HIEU.ZHTCC
         private void ChangeTime()
         {
             System.DateTime time = startTime;
-            for (int i = 0; i < StepList.Count; i++)
+            for (int i = 0; i < joReportStepList.Count; i++)
             {
                 time = time.AddSeconds(UnityEngine.Random.Range(1, 3));
-                StepList[i]["startTime"] = time.ToString("yyyy-MM-dd HH:mm:ss");
+                joReportStepList[i]["startTime"] = time.ToString("yyyy-MM-dd HH:mm:ss");
                 time = time.AddSeconds(UnityEngine.Random.Range(1, 3));
-                StepList[i]["endTime"] = time.ToString("yyyy-MM-dd HH:mm:ss");
+                joReportStepList[i]["endTime"] = time.ToString("yyyy-MM-dd HH:mm:ss");
             }
         }
 
