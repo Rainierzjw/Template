@@ -113,7 +113,7 @@ namespace UI
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
             Application.ExternalCall("ReportEdit", jsonReslut);
-            StartCoroutine(SendScore());
+            //StartCoroutine(SendScore());
 #endif
         }
         
