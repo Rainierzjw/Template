@@ -42,7 +42,7 @@ namespace Com.Rainier.Buskit3D.OwvlabMajor
             IEnumerator Send()
             {
                 UnityWebRequest req = UnityWebRequest.Post(url, form);
-                req.SetRequestHeader("Content-Type", "Application/json;charset=UTF-8");
+                req.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
                 var op = req.SendWebRequest();
                 
                 yield return op;
