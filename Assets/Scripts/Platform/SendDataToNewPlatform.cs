@@ -290,7 +290,7 @@ namespace Com.HIEU.ZHTCC
         #region 接口API
         private IEnumerator SendData(string str)
         {
-            var req = UnityWebRequest.Post(host + "/openapi/data_upload", str);
+            var req = UnityWebRequest.PostWwwForm(host + "/openapi/data_upload", str);
             req.SetRequestHeader("Content-Type", "application/json;charset=UTF-8");
             var op = req.SendWebRequest();
             yield return op;
@@ -315,7 +315,7 @@ namespace Com.HIEU.ZHTCC
                 int count = joReportStepList.Count;
                 for (int i = 0; i < 11 - count; i++)
                 {
-                    RecordsStep("填充步骤", "填充步骤{i}", 0, 0, "赋分模型");
+                    RecordsStep("填充步骤", $"填充步骤{i}", 0, 0, "赋分模型");
                 }
             }
         }

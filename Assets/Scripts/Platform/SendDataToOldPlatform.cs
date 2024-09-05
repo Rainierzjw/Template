@@ -132,6 +132,35 @@ namespace UI
         /// <param name="remarks">备注</param>
         public void AddStep(string title, /*DateTime startTime, DateTime endTime,*/ int maxScore, int score, int repeatCount = 0, string evaluation = "暂无", string scoringModel = "暂无", string remarks = "暂无")
         {
+            for (int i = 0; i < steps.Count; i++)
+            {
+                if (steps[i]["title"].ToString() == title)
+                {
+                    Debug.Log(title + "：已上传过得分" + steps[i]["score"]);
+
+                    //StepList[i]["endTime"] = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+                    if (score > 0)
+                    {
+                        steps[i]["score"] = score;
+                        Debug.Log(title + "：更新得分" + score);
+                    }
+
+                    if (score < maxScore * 0.3)
+                    {
+                        steps[i]["evaluation"] = "差";
+                    }
+                    if ((maxScore * 0.3 <= score) && (score < maxScore * 0.7))
+                    {
+                        steps[i]["evaluation"] = "良";
+                    }
+                    if (maxScore * 0.7 <= score)
+                    {
+                        steps[i]["evaluation"] = "优秀";
+                    }
+                    return;
+                }
+            }
             JObject step = new JObject();
             step["seq"] = steps.Count + 1;
             step["title"] = title;
@@ -184,7 +213,7 @@ namespace UI
             result["expId"] = expId;
             IEnumerator Send()
             {
-                UnityWebRequest req = UnityWebRequest.Post(url, result.ToString());
+                UnityWebRequest req = UnityWebRequest.PostWwwForm(url, result.ToString());
                 req.SetRequestHeader("Content-Type", "Application/json");
                 var op = req.SendWebRequest();
                 yield return op;

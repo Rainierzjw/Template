@@ -70,7 +70,7 @@ namespace Com.Rainier.Buskit3D.OwvlabMajor
             {
                 Debug.Log(url);
                 Debug.Log(param.ToString(Newtonsoft.Json.Formatting.None));
-                UnityWebRequest req = UnityWebRequest.Post(url, param.ToString(Newtonsoft.Json.Formatting.None));
+                UnityWebRequest req = UnityWebRequest.PostWwwForm(url, param.ToString(Newtonsoft.Json.Formatting.None));
                 req.SetRequestHeader("Content-Type", "Application/json;charset=UTF-8");
                 var op = req.SendWebRequest();
                 yield return op;
