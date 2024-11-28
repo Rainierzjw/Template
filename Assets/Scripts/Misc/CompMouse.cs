@@ -21,188 +21,188 @@ namespace Misc
     /// 
     /// </summary>
 	public class CompMouse : UnityEngine.EventSystems.EventTrigger
-	{
-		private void Update()
-		{
-			OnDrag();
-		}
+    {
+        private void Update()
+        {
+            OnDrag();
+        }
 
-		#region UIEvent
+        #region UIEvent
 
-		public delegate void DelHandler(CompMouse cm); //定义委托类型
+        public delegate void DelHandler(CompMouse cm); //定义委托类型
 
-		public DelHandler onUIClick; //鼠标点击
-		public DelHandler onUIDown; //鼠标按下
-		public DelHandler onUIUp; //鼠标抬起
-		public DelHandler onUIEnter; //鼠标进入
-		public DelHandler onUIExit; //鼠标退出
-		public DelHandler onUIStartDrag; //开始拖拽
-		public DelHandler onUIDrag;//正在拖拽
-		public DelHandler onUIEndDrag;//结束拖拽
-		private bool isDrag;
-		
-		public override void OnPointerClick(PointerEventData eventData)
-		{
-			if (onUIClick != null) onUIClick(this);
-		}
+        public DelHandler onUIClick; //鼠标点击
+        public DelHandler onUIDown; //鼠标按下
+        public DelHandler onUIUp; //鼠标抬起
+        public DelHandler onUIEnter; //鼠标进入
+        public DelHandler onUIExit; //鼠标退出
+        public DelHandler onUIStartDrag; //开始拖拽
+        public DelHandler onUIDrag;//正在拖拽
+        public DelHandler onUIEndDrag;//结束拖拽
+        private bool isDrag;
 
-		public override void OnPointerDown(PointerEventData eventData)
-		{
-			if (onUIDown != null)
-			{
-				onUIDown(this);
-			}
+        public override void OnPointerClick(PointerEventData eventData)
+        {
+            if (onUIClick != null) onUIClick(this);
+        }
 
-			if (onUIStartDrag != null)
-			{
-				isDrag = true;
-				onUIStartDrag(this);
-			} 
-		}
+        public override void OnPointerDown(PointerEventData eventData)
+        {
+            if (onUIDown != null)
+            {
+                onUIDown(this);
+            }
 
-		public override void OnPointerEnter(PointerEventData eventData)
-		{
-			if (onUIEnter != null)
-			{
-				onUIEnter(this);
-			}
-		}
+            if (onUIStartDrag != null)
+            {
+                isDrag = true;
+                onUIStartDrag(this);
+            }
+        }
 
-		public override void OnPointerExit(PointerEventData eventData)
-		{
-			if (onUIExit != null)
-			{
-				onUIExit(this);
-			}
-		}
+        public override void OnPointerEnter(PointerEventData eventData)
+        {
+            if (onUIEnter != null)
+            {
+                onUIEnter(this);
+            }
+        }
 
-		public override void OnPointerUp(PointerEventData eventData)
-		{
-			if (onUIUp != null)
-			{
-				onUIUp(this);
-			}
+        public override void OnPointerExit(PointerEventData eventData)
+        {
+            if (onUIExit != null)
+            {
+                onUIExit(this);
+            }
+        }
 
-			if (onUIEndDrag != null)
-			{
-				isDrag = false;
-				onUIEndDrag(this);
-			}
-		}
+        public override void OnPointerUp(PointerEventData eventData)
+        {
+            if (onUIUp != null)
+            {
+                onUIUp(this);
+            }
 
-		private void OnDrag()
-		{
-			if (isDrag && onUIDrag != null)
-			{
-				onUIDrag(this);
-			}
-		}
-		
-		#endregion
+            if (onUIEndDrag != null)
+            {
+                isDrag = false;
+                onUIEndDrag(this);
+            }
+        }
 
-		#region ObjEvent
+        private void OnDrag()
+        {
+            if (isDrag && onUIDrag != null)
+            {
+                onUIDrag(this);
+            }
+        }
 
-		public event Action<CompMouse> onStartDrag;
-		public event Action<CompMouse> onDrag;
-		public event Action<CompMouse> onEndDrag;
-		public event Action<CompMouse> onEnter;
-		public event Action<CompMouse> onExit;
-		public event Action<CompMouse> onDouble;
-		public event Action<CompMouse> onDown;
-		public event Action<CompMouse> onUp;
+        #endregion
 
-		public float durtion = 0.5f;
-        
-		private float lastTime;
-        
-		public string key { get; set; }
-        
-		private void OnMouseDown()
-		{
-			if (onDown != null)
-			{
-				onDown(this);
-			}
-			else
-			{
-				OnStartMouseDrag();
-			}
-		}
+        #region ObjEvent
 
-		private void OnMouseUp()
-		{
-			if (Time.time - lastTime < durtion)
-			{
-				if (onDouble != null)
-				{
-					onDouble(this);
-				}
-			}
-			else
-			{
-				if (onUp != null)
-				{
-					onUp(this);
-				}
-				else
-				{
-					OnEndMouseDrag();
-				}
-			}
+        public Action<CompMouse> onStartDrag;
+        public Action<CompMouse> onDrag;
+        public Action<CompMouse> onEndDrag;
+        public Action<CompMouse> onEnter;
+        public Action<CompMouse> onExit;
+        public Action<CompMouse> onDouble;
+        public Action<CompMouse> onDown;
+        public Action<CompMouse> onUp;
 
-			lastTime = Time.time;
-		}
+        public float durtion = 0.5f;
 
-		private void OnStartMouseDrag()
-		{
-			if (EventSystem.current.IsPointerOverGameObject()) return;
-			onStartDrag?.Invoke(this);
-		}
-		
-		private void OnMouseDrag()
-		{
-			if (EventSystem.current.IsPointerOverGameObject()) return;
-			onDrag?.Invoke(this);
-		}
-		
-		private void OnEndMouseDrag()
-		{
-			if (EventSystem.current.IsPointerOverGameObject()) return;
-			onEndDrag?.Invoke(this);
-		}
+        private float lastTime;
 
-		private void OnMouseEnter()
-		{
-			if (EventSystem.current.IsPointerOverGameObject()) return;
-			onEnter?.Invoke(this);
-		}
+        public string key { get; set; }
 
-		private void OnMouseExit()
-		{
-			if (EventSystem.current.IsPointerOverGameObject()) return;
-			onExit?.Invoke(this);
-		}
+        private void OnMouseDown()
+        {
+            if (onDown != null)
+            {
+                onDown(this);
+            }
+            else
+            {
+                OnStartMouseDrag();
+            }
+        }
 
-		#endregion
-		
-		
+        private void OnMouseUp()
+        {
+            if (Time.time - lastTime < durtion)
+            {
+                if (onDouble != null)
+                {
+                    onDouble(this);
+                }
+            }
+            else
+            {
+                if (onUp != null)
+                {
+                    onUp(this);
+                }
+                else
+                {
+                    OnEndMouseDrag();
+                }
+            }
 
-		private void OnDestroy()
-		{
-			onUIUp = null;
-			onUIDown = null;
-			onUIExit = null;
-			onUIEnter = null;
-			onUIClick = null;
-			onDown = null;
-			onUp = null;
-			onDouble = null;
-			onStartDrag = null;
-			onDrag = null;
-			onEndDrag = null;
-			onEnter = null;
-			onExit = null;
-		}
-	}
+            lastTime = Time.time;
+        }
+
+        private void OnStartMouseDrag()
+        {
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+            onStartDrag?.Invoke(this);
+        }
+
+        private void OnMouseDrag()
+        {
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+            onDrag?.Invoke(this);
+        }
+
+        private void OnEndMouseDrag()
+        {
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+            onEndDrag?.Invoke(this);
+        }
+
+        private void OnMouseEnter()
+        {
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+            onEnter?.Invoke(this);
+        }
+
+        private void OnMouseExit()
+        {
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+            onExit?.Invoke(this);
+        }
+
+        #endregion
+
+
+
+        private void OnDestroy()
+        {
+            onUIUp = null;
+            onUIDown = null;
+            onUIExit = null;
+            onUIEnter = null;
+            onUIClick = null;
+            onDown = null;
+            onUp = null;
+            onDouble = null;
+            onStartDrag = null;
+            onDrag = null;
+            onEndDrag = null;
+            onEnter = null;
+            onExit = null;
+        }
+    }
 }
 

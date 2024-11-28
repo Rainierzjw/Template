@@ -27,9 +27,10 @@ namespace UI
     {
         public enum UILayer
         {
+            Bottom,
             Default,
+            Higher,
             Top,
-            PLC,
             Mask,
             Loding,
         }
@@ -72,14 +73,17 @@ namespace UI
             onLoaded?.Invoke();
             switch (layer)
             {
+                case UILayer.Bottom:
+                    transform.SetParent(transform.parent.FindTnf2("Bottom"));
+                    break;
                 case UILayer.Default:
                     transform.SetParent(transform.parent.FindTnf2("Default"));
                     break;
+                case UILayer.Higher:
+                    transform.SetParent(transform.parent.FindTnf2("Higher"));
+                    break;
                 case UILayer.Top:
                     transform.SetParent(transform.parent.FindTnf2("Top"));
-                    break;
-                case UILayer.PLC:
-                    transform.SetParent(transform.parent.FindTnf2("PLC"));
                     break;
                 case UILayer.Mask:
                     transform.SetParent(transform.parent.FindTnf2("Mask"));

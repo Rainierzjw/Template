@@ -54,7 +54,7 @@ namespace SystemManager
         public void Init()
         {
             step.onChange += OnStepChange;
-            step.data = (int)StepIndex.s0_0;
+            step.data = 0;
         }
 
         public void AddStep()

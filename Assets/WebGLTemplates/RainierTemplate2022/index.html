@@ -6,6 +6,8 @@
     <title>Unity WebGL Player | {{{ PRODUCT_NAME }}}</title>
     <link rel="shortcut icon" href="TemplateData/Myfavicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+    <script src ="./RainierDockingSDK.js"></script>
+    <script src ="./RainierDockingSDK.min.js"></script>
 #if SHOW_DIAGNOSTICS
     <link rel="stylesheet" href="<<<TemplateData/diagnostics.css>>>">
     <script src="<<<TemplateData/diagnostics.js>>>"></script>
@@ -128,14 +130,15 @@
       canvas.style.background = "url('" + buildUrl + "/{{{ BACKGROUND_FILENAME.replace(/'/g, '%27') }}}') center / cover";
 #endif
       loadingBar.style.display = "block";
-
+      var unityInstance = null;
       var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
-              }).then((unityInstance) => {
+              }).then((unityInstanceItem) => {
                 loadingBar.style.display = "none";
+                unityInstance = unityInstanceItem;
 #if SHOW_DIAGNOSTICS
                 diagnostics_icon.onclick = () => {
                   unityDiagnostics.openDiagnosticsDiv(unityInstance.GetMemoryInfo);

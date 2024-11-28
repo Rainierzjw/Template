@@ -23,7 +23,6 @@ namespace Actor
     /// </summary>
 	public class ACUseObjectBase : MonoBehaviour 
 	{
-		public List<StepIndex> UseStepIndex = new List<StepIndex>();
 		protected CompMouse cm;
 		protected StepSystem stepSystem;
 		protected RaycastHit hit;

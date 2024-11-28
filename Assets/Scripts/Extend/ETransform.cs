@@ -78,6 +78,26 @@ namespace Extend
             return (Transform) null;
         }
 
+        /// <summary>
+        /// 获取组件，没有会添加
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="tnf"></param>
+        /// <returns></returns>
+        public static T GetComp<T>(this Transform tnf) where T : Component
+        {
+            if (tnf.GetComponent<T>()) return tnf.GetComponent<T>();
+            else return tnf.gameObject.AddComponent<T>();
+        }
+
+        /// <summary>
+        /// 按<类型>("名称")查找组件
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="parent"></param>
+        /// <param name="name"></param>
+        /// <param name="recursive"></param>
+        /// <returns></returns>
         public static T FindComp<T>(this Transform parent, string name, bool recursive = true)
         {
             Transform tnf2 = parent.FindTnf2(name, recursive);
