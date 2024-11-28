@@ -233,10 +233,10 @@ namespace Com.HIEU.ZHTCC
         /// <summary>
         /// 记录实验报告文本
         /// </summary>
-        public void RecordsReport()
+        public void RecordsReport(string key, string value)
         {
             JObject jo = new JObject();
-            jo["text1"] = "";
+            jo[key] = value;
             joReportTextList.Add(jo);
         }
 
