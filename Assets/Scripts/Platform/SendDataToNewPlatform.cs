@@ -142,7 +142,6 @@ namespace Com.HIEU.ZHTCC
         {
             PatchStep();
             ChangeTime();
-            RecordsReport();
             JObject jo = new JObject();
             jo["appId"] = appId;
             jo["expId"] = expId;
