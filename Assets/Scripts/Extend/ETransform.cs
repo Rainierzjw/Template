@@ -54,6 +54,13 @@ namespace Extend
             return parent.FindComp<RectTransform>(name, recursive);
         }
 
+        /// <summary>
+        /// 按名称查找Transform
+        /// </summary>
+        /// <param name="tranforms"></param>
+        /// <param name="name"></param>
+        /// <param name="recursive"></param>
+        /// <returns></returns>
         public static Transform FindTnf2(
             this IEnumerable<Transform> tranforms,
             string name,

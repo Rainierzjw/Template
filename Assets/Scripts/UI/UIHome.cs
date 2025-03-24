@@ -29,6 +29,7 @@ namespace UI
 	    {
 		    base.OnLoaded();
 		    startBtn = transform.FindComp<Button>("startBtn");
+            startBtn = transform.FindTnf2("startBtn").GetComponent<Button>();
 		    startBtn.onClick.AddListener(StartClick);
 	    }
 
